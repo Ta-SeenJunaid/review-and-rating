@@ -1,7 +1,9 @@
-package com.teamU.groupFour.reviewandrating.service;
+package com.teamU.groupFour.reviewandrating.entity;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,28 +11,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class OurUserDetails implements UserDetails {
 
-	private String userName;
+	private String email;
+	private String password;
+	private String name;
+	private boolean active;
+	private List<GrantedAuthority> authorities;
 	
-	public OurUserDetails(String userName) {
-		this.userName = userName;
+	public OurUserDetails(User user) {
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.name = user.getName();
+		this.authorities = Arrays.stream(user.getRoles().split(","))
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
 	}
-	
-	public OurUserDetails() {
+
+	public String getEmail() {
+		return email;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		return "123";
+		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		return userName;
+		return email;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	@Override
@@ -52,5 +72,6 @@ public class OurUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+	
 
 }

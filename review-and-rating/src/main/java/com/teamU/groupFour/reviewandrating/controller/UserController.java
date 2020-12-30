@@ -8,17 +8,17 @@ public class UserController {
 	
 	@GetMapping("/")
 	public String home() {
-		return("Welcome");
+		return("<h1>Welcome<h1>");
 	}
 	
 	@GetMapping("/user")
 	public String user() {
-		return("Welcome user");
+		return("<h1>Welcome user<h1>");
 	}
 	
 	@GetMapping("/admin")
 	public String admin() {
-		return("Welcome admin");
+		return("<h1>Welcome admin<h1>");
 	}
 
 }
